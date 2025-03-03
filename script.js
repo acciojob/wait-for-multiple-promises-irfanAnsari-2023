@@ -1,13 +1,12 @@
-//your JS code here. If required.
 document.addEventListener("DOMContentLoaded", function () {
     const outputTable = document.getElementById("output");
 
-    // Show "Loading..." initially
-    outputTable.innerHTML = `<tr><td colspan="2">Loading...</td></tr>`;
+    // Add a loading row with an ID
+    outputTable.innerHTML = `<tr id="loading"><td colspan="2">Loading...</td></tr>`;
 
     // Function to create a promise with a random delay (1-3 seconds)
     function createPromise(id) {
-        const delay = Math.random() * 2000 + 1000; // Random delay between 1000ms (1s) and 3000ms (3s)
+        const delay = Math.random() * 2000 + 1000; // Random delay between 1-3 seconds
         return new Promise((resolve) => {
             setTimeout(() => resolve({ id, time: (delay / 1000).toFixed(3) }), delay);
         });
@@ -18,8 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Wait for all promises to resolve
     Promise.all(promises).then((results) => {
-        // Remove the loading row
-        outputTable.innerHTML = "";
+        // Remove the loading row (Fix for Cypress test)
+        document.getElementById("loading").remove();
 
         // Populate table with resolved values
         results.forEach((result) => {
